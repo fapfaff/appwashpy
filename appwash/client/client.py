@@ -62,6 +62,12 @@ class AppWash:
 
         services = []
         for service in req.response["data"]:
-            services.append(Service._from_result(service))
+            services.append(Service._from_result(self, service))
 
         return services
+
+    def buy_service(self, service_id: str):
+        body = {"sourceChannel": "WEBSITE"}
+        req = ApiRequest(
+            self, endpoint=f'/connector/{service_id}/start', method=HTTP_METHOD.POST, body=body)
+        print(req.response)
