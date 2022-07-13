@@ -1,6 +1,6 @@
+import requests
 from appwash.common.settings import BASE_URL
 from appwash.common.enums import HTTP_METHOD
-import requests
 from typing import TYPE_CHECKING
 
 # Fix cyclical import because of type annotation
@@ -15,7 +15,8 @@ class ApiRequest:
     body: dict
     headers: dict = {
         "platform": "appWash",
-        "language": "DE"
+        "language": "EN",
+        "Accept": "application/json"
     }
     _response: dict
 
@@ -38,12 +39,11 @@ class ApiRequest:
         self._perform_request()
 
     def _perform_request(self):
-        response = requests.request(self.method,
-                                    url=self.url,
-                                    params=self.params,
-                                    json=self.body,
-                                    headers=self.headers).json()
-        self._response = response
+        self._response = requests.request(self.method,
+                                          url=self.url,
+                                          params=self.params,
+                                          json=self.body,
+                                          headers=self.headers).json()
 
     @property
     def response(self):
