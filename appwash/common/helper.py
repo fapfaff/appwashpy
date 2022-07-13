@@ -1,5 +1,5 @@
 import time
 
 
-def current_timestamp():
+def current_timestamp() -> int:
     return int(time.time())

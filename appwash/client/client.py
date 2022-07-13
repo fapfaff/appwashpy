@@ -22,7 +22,7 @@ class AppWash:
 
         self._authenticate()
 
-    def _authenticate(self):
+    def _authenticate(self) -> None:
         request = ApiRequest(
             self,
             endpoint='/login',
@@ -37,7 +37,7 @@ class AppWash:
         self._token_expiry = request.response['token_expire_ts']
 
     @property
-    def token(self):
+    def token(self) -> None:
         # Obtain new token if old one is expired
         if(self._token_expiry > current_timestamp()):
             return self._token
@@ -66,8 +66,7 @@ class AppWash:
 
         return services
 
-    def buy_service(self, service_id: str):
+    def buy_service(self, service_id: str) -> None:
         body = {"sourceChannel": "WEBSITE"}
         req = ApiRequest(
             self, endpoint=f'/connector/{service_id}/start', method=HTTP_METHOD.POST, body=body)
-        print(req.response)

@@ -33,5 +33,5 @@ class Service:
             state=result["state"]
         )
 
-    def buy(self):
+    def buy(self) -> None:
         self._client.buy_service(self.service_id)

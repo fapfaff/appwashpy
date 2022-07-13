@@ -38,7 +38,7 @@ class ApiRequest:
 
         self._perform_request()
 
-    def _perform_request(self):
+    def _perform_request(self) -> None:
         self._response = requests.request(self.method,
                                           url=self.url,
                                           params=self.params,
@@ -46,5 +46,5 @@ class ApiRequest:
                                           headers=self.headers).json()
 
     @property
-    def response(self):
+    def response(self) -> dict:
         return self._response
