@@ -1,6 +1,7 @@
 from appwash.client.requests import ApiRequest
 from appwash.common.enums import HTTP_METHOD
 from appwash.common.helper import current_timestamp
+from appwash.core.location import Location
 
 
 class AppWash:
@@ -42,3 +43,12 @@ class AppWash:
         else:
             self._authenticate()
             return self._token
+
+    def location(self, location_id: str = None) -> Location:
+        location_id = location_id if location_id != None else self.location_id
+
+        req = ApiRequest(
+            self, endpoint=f"/locations/split/{location_id}", method=HTTP_METHOD.GET)
+
+        return Location._from_result(req.response["data"])
+
