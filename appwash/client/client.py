@@ -1,7 +1,8 @@
 from appwash.client.requests import ApiRequest
-from appwash.common.enums import HTTP_METHOD
+from appwash.common.enums import HTTP_METHOD, SERVICE_TYPE
 from appwash.common.helper import current_timestamp
 from appwash.core.location import Location
+from appwash.core.service import Service
 
 
 class AppWash:
@@ -52,3 +53,15 @@ class AppWash:
 
         return Location._from_result(req.response["data"])
 
+    def services(self, location_id: str = None, service_type: SERVICE_TYPE = None) -> Service:
+        location_id = location_id if location_id != None else self.location_id
+        body = {"serviceType": service_type} if service_type != None else {}
+
+        req = ApiRequest(
+            self, endpoint=f"/location/{location_id}/connectorsv2", method=HTTP_METHOD.POST, body=body)
+
+        services = []
+        for service in req.response["data"]:
+            services.append(Service._from_result(service))
+
+        return services
