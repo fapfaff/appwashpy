@@ -9,6 +9,19 @@ if TYPE_CHECKING:
 
 @dataclass
 class Service:
+    """Representation of an AppWash Service.
+
+    Attributes:
+        service_id: ID of the service.
+        location_id: ID of the location this service belongs to.
+        type: Type of the Service. Known Types: WASHING_MACHINE, DRYER, ELECTRICITY.
+        name: Name of the service.
+        cost_cents: Price of the service in cents.
+        reservable: Wether the service is reservable.
+        state: Current state of the service. Known States: AVAILABLE, OCCUPIED, FAULTED, SESSION_WAIT_ON 
+        session_start: Timestamp of when the service was started, if it is currently activate.
+
+    """
     _client: "AppWash" = field(repr=False)
     service_id: str
     location_id: str
@@ -34,4 +47,9 @@ class Service:
         )
 
     def buy(self) -> None:
+        """Buys the service.
+
+        Be careful, calling this function multiple times cancels the previous service and bill you again.
+        No warranty for freedom from errors and no compensation for damages incurred.
+        """
         self._client.buy_service(self.service_id)

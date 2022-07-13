@@ -6,12 +6,22 @@ from appwash.core.service import Service
 
 
 class AppWash:
+    """Entry point for the AppWashPy SDK.
 
+    Entry point containing methods to load locations and services.
+    Needs your AppWash Login credentials to handle the authentication.
+
+    Attributes:
+        email: Email Adress of your AppWash Account.
+        password: Password of your AppWash Account.
+        location_id (optional): The location_id of your house. Can be obtained via the website (URL-Parameter id, e.g. 11111 for https://appwash.com/myappwash/location/?id=11111)
+
+    """
     email: str
     password: str
-    _token_expiry: int = None
-
     location_id: str = None
+
+    _token_expiry: int = None
 
     def __init__(self, email: str, password: str, location_id: str = None):
         self.email = email
@@ -23,6 +33,7 @@ class AppWash:
         self._authenticate()
 
     def _authenticate(self) -> None:
+        """Loads a new authentication token for your Account."""
         request = ApiRequest(
             self,
             endpoint='/login',
@@ -38,7 +49,7 @@ class AppWash:
 
     @property
     def token(self) -> None:
-        # Obtain new token if old one is expired
+        """Getter for the token. Automatically renews the token if the old one is expired."""
         if(self._token_expiry > current_timestamp()):
             return self._token
         else:
@@ -46,6 +57,11 @@ class AppWash:
             return self._token
 
     def location(self, location_id: str = None) -> Location:
+        """Load your default or a specific location.
+
+        Attributes:
+            location_id (optional): The location_id of your house. Can be seen in the appwash URL. Uses the location_id of the Objekt if not specified.  
+            """
         location_id = location_id if location_id != None else self.location_id
 
         req = ApiRequest(
@@ -54,6 +70,11 @@ class AppWash:
         return Location._from_result(req.response["data"])
 
     def services(self, location_id: str = None, service_type: SERVICE_TYPE = None) -> Service:
+        """Load the available services at your house.
+
+        Attributes:
+            location_id (optional): The location_id of your house. Can be seen in the appwash URL. Uses the location_id of the Objekt if not specified.
+        """
         location_id = location_id if location_id != None else self.location_id
         body = {"serviceType": service_type} if service_type != None else {}
 
@@ -67,6 +88,11 @@ class AppWash:
         return services
 
     def buy_service(self, service_id: str) -> None:
+        """Buy the service with the specified ID. 
+
+        Be careful, calling this function multiple times cancels the previous service and bill you again.
+        No warranty for freedom from errors and no compensation for damages incurred.
+        """
         body = {"sourceChannel": "WEBSITE"}
         req = ApiRequest(
             self, endpoint=f'/connector/{service_id}/start', method=HTTP_METHOD.POST, body=body)

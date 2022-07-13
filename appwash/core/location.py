@@ -4,6 +4,17 @@ from appwash.common.enums import LOCATION_TYPE
 
 @dataclass
 class Location:
+    """Representation of a AppWash location.
+
+    Attributes:
+        id: ID of the Location
+        location_type: Which type of location it is.
+        services: List of dicsts of available services at the location. Dicts contains "service" and "costs_cent" keys. 
+        name: Name of the location.
+        reservable: Wether you can reserve services at the location
+        reservable_days_in_advance: How much days in advance you can reserve if allowed.
+
+    """
     id: str
     location_type: LOCATION_TYPE
     location_status: str
@@ -22,7 +33,7 @@ class Location:
 
             services.append({
                 "service": service["type"],
-                "costsCent": price
+                "costs_cent": price
             })
 
         return Location(
