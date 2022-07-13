@@ -9,9 +9,14 @@ class AppWash:
     password: str
     _token_expiry: int = None
 
-    def __init__(self, email: str, password: str):
+    location_id: str = None
+
+    def __init__(self, email: str, password: str, location_id: str = None):
         self.email = email
         self.password = password
+
+        if location_id != None:
+            self.location_id = location_id
 
         self._authenticate()
 
