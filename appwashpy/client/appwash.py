@@ -114,11 +114,29 @@ class AppWash:
 
         return services
 
+    def service(self, service_id: str) -> Service:
+        """Load a specific service by ID.
+
+        Attributes:
+            serivce_id: ID of the service"""
+
+        request = ApiRequest(
+            self, endpoint=f"//connector/{service_id}", method=HTTP_METHOD.GET)
+
+        if request.response["errorCode"] != 0:
+            raise AppWashApiError(
+                request.response["errorCode"], request.response["errorDescription"])
+
+        return Service._from_result(self, request.response["data"])
+
     def buy_service(self, service_id: str) -> None:
         """Buy the service with the specified ID. 
 
-        Be careful, calling this function multiple times cancels the previous service and bill you again.
-        No warranty for freedom from errors and no compensation for damages incurred.
+            Be careful, calling this function multiple times cancels the previous service and bill you again.
+            No warranty for freedom from errors and no compensation for damages incurred.
+
+        Attributes:
+            serivce_id: ID of the service
         """
         body = {"sourceChannel": "WEBSITE"}
         request = ApiRequest(
