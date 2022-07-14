@@ -25,6 +25,10 @@ location = appwash.location()
 # or
 location = appwash.location("12345")
 ```
+#### Obtaining the Location ID
+If you login at [appwash.com](https://appwash.com/en/) you should get redirected to your default location.  
+The URL then contains the Location ID. For example *12345* for h<span>ttps://</span>appwash.com/myappwash/location/?id=*12345*
+
 ### Services
 #### List of available serives
 Get a list of available services/machines at your default or the specified location.  
