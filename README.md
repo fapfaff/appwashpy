@@ -8,6 +8,9 @@ Install the package via pip:
 $ pip install appwashpy
 ```
 
+Check the Juypter-Notebook for more code examples!
+
+### Get Started
 Import and initialize the AppWash-Client with your Email and Password:  
 Optionally pass the ID of your default location. See below how to obtain it. 
 ```Python
@@ -30,7 +33,7 @@ If you login at [appwash.com](https://appwash.com/en/) you should get redirected
 The URL then contains the Location ID. For example *12345* for h<span>ttps://</span>appwash.com/myappwash/location/?id=*12345*
 
 ### Services
-#### List of available serives
+#### List of Available Services
 Get a list of available services/machines at your default or the specified location.  
 The Service Object contains among other things the type of service (washing machine, dryer, ...) and the current status (available, occupied, ...).
 ```Python
@@ -38,6 +41,12 @@ services = appwash.services()
 # or 
 services = appwash.services("12345")
 ```
+#### Get Specific Service by ID
+Get a specific Service Object.
+```Python
+services = appwash.services("12345")
+```
+
 #### Buy the Service
 The service can be bought directly through the .buy() method or via the AppWash-Object.  
 This will bill you the corresponding price!
