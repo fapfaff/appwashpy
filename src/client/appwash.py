@@ -73,10 +73,14 @@ class AppWash:
             """
         location_id = location_id if location_id != None else self.location_id
 
-        req = ApiRequest(
+        request = ApiRequest(
             self, endpoint=f"/locations/split/{location_id}", method=HTTP_METHOD.GET)
 
-        return Location._from_result(req.response["data"])
+        if request.response["error_code"] != 0:
+            raise AppWashApiError(
+                request.response["error_code"], request.response["errorDescription"])
+
+        return Location._from_result(request.response["data"])
 
     def services(self, location_id: str = None, service_type: SERVICE_TYPE = None) -> Service:
         """Load the available services at your house.
@@ -87,11 +91,15 @@ class AppWash:
         location_id = location_id if location_id != None else self.location_id
         body = {"serviceType": service_type} if service_type != None else {}
 
-        req = ApiRequest(
+        request = ApiRequest(
             self, endpoint=f"/location/{location_id}/connectorsv2", method=HTTP_METHOD.POST, body=body)
 
+        if request.response["error_code"] != 0:
+            raise AppWashApiError(
+                request.response["error_code"], request.response["errorDescription"])
+
         services = []
-        for service in req.response["data"]:
+        for service in request.response["data"]:
             services.append(Service._from_result(self, service))
 
         return services
@@ -103,5 +111,9 @@ class AppWash:
         No warranty for freedom from errors and no compensation for damages incurred.
         """
         body = {"sourceChannel": "WEBSITE"}
-        req = ApiRequest(
+        request = ApiRequest(
             self, endpoint=f'/connector/{service_id}/start', method=HTTP_METHOD.POST, body=body)
+
+        if request.response["error_code"] != 0:
+            raise AppWashApiError(
+                request.response["error_code"], request.response["errorDescription"])
