@@ -3,12 +3,12 @@ from enum import Enum
 
 class BaseEnum(Enum):
     """Modified Enum
-    Allows accessing the value without .value.
+
     Allows == comparison
     Allows (x in BaseEnum)"""
 
     def __str__(self):
-        """Access the value with ENUM.X instead of ENUM.X.value."""
+        """Print the value with ENUM.X instead of ENUM.X.value."""
         return self.value
 
     def __eq__(self, other):
