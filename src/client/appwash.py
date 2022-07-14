@@ -71,6 +71,11 @@ class AppWash:
         Attributes:
             location_id (optional): The location_id of your house. Can be seen in the appwash URL. Uses the location_id of the Objekt if not specified.  
             """
+
+        # Use either location_id parameter or default location_id
+        if location_id == None and self.location_id == None:
+            raise ValueError(
+                "Either set a default location_id or pass a location_id to the method.")
         location_id = location_id if location_id != None else self.location_id
 
         request = ApiRequest(
@@ -88,7 +93,12 @@ class AppWash:
         Attributes:
             location_id (optional): The location_id of your house. Can be seen in the appwash URL. Uses the location_id of the Objekt if not specified.
         """
+        # Use either location_id parameter or default location_id
+        if location_id == None and self.location_id == None:
+            raise ValueError(
+                "Either set a default location_id or pass a location_id to the method.")
         location_id = location_id if location_id != None else self.location_id
+
         body = {"serviceType": service_type} if service_type != None else {}
 
         request = ApiRequest(
