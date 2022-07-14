@@ -1,5 +1,6 @@
 from src.client.requests import ApiRequest
 from src.common.enums import HTTP_METHOD, SERVICE_TYPE
+from src.common.errors import AppWashApiError, WrongCredentialsError
 from src.common.helper import current_timestamp
 from src.core.location import Location
 from src.core.service import Service
@@ -44,8 +45,16 @@ class AppWash:
             }
         )
 
-        self._token = request.response['login']['token']
-        self._token_expiry = request.response['token_expire_ts']
+        error_code = request.response["errorCode"]
+        if error_code == 0:
+            self._token = request.response['login']['token']
+            self._token_expiry = request.response['token_expire_ts']
+        elif error_code == 61:
+            raise WrongCredentialsError(
+                error_code, request.response["errorDescription"], self.email, self.password)
+        else:
+            raise AppWashApiError(
+                error_code, request.response["errorDescription"])
 
     @property
     def token(self) -> None:
