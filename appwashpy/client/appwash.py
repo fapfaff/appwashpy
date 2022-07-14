@@ -87,7 +87,7 @@ class AppWash:
 
         return Location._from_result(request.response["data"])
 
-    def services(self, location_id: str = None, service_type: SERVICE_TYPE = None) -> Service:
+    def services(self, location_id: str = None, service_type: SERVICE_TYPE = None) -> list[Service]:
         """Load the available services at your house.
 
         Attributes:
