@@ -3,6 +3,11 @@
 Inofficial API Client for appWash by Miele.
 
 ## Usage
+Install the package via pip:
+```shell
+$ pip install appwashpy
+```
+
 Import and initialize the AppWash-Client with your Email and Password:  
 Optionally pass the ID of your default location. See below how to obtain it. 
 ```Python
