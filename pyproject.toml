@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "appwashpy"
+version = "1.0.0"
+authors = [
+  { name="fapfaff", email="fabian-pfaff@outlook.de" },
+]
+description = "Inofficial API Client for appWash by Miele."
+readme = "README.md"
+license = { text="GNU General Public License v3 (GPLv3)"  }
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  'requests',
+]
+
+[project.optional-dependencies]
+tests = [
+  'pytest',
+  'pytest-mock'
+]
+
+[project.urls]
+"Homepage" = "https://github.com/fapfaff/appwashpy"
+"Bug Tracker" = "https://github.com/fapfaff/appwashpy/issues"
