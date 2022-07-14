@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from appwash.common.enums import LOCATION_TYPE
+from src.common.enums import LOCATION_TYPE
 
 
 @dataclass

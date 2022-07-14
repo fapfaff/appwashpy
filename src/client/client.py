@@ -1,8 +1,8 @@
-from appwash.client.requests import ApiRequest
-from appwash.common.enums import HTTP_METHOD, SERVICE_TYPE
-from appwash.common.helper import current_timestamp
-from appwash.core.location import Location
-from appwash.core.service import Service
+from src.client.requests import ApiRequest
+from src.common.enums import HTTP_METHOD, SERVICE_TYPE
+from src.common.helper import current_timestamp
+from src.core.location import Location
+from src.core.service import Service
 
 
 class AppWash:

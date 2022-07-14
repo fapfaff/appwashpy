@@ -1,11 +1,11 @@
 import requests
-from appwash.common.settings import BASE_URL
-from appwash.common.enums import HTTP_METHOD
+from src.common.settings import BASE_URL
+from src.common.enums import HTTP_METHOD
 from typing import TYPE_CHECKING
 
 # Fix cyclical import because of type annotation
 if TYPE_CHECKING:
-    from appwash import AppWash
+    from src import AppWash
 
 
 class ApiRequest:
