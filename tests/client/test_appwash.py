@@ -2,11 +2,12 @@ import pytest
 from appwashpy import AppWash, Location, Service, LOCATION_TYPE, SERVICE_TYPE, check_credentials
 from appwashpy.common.errors import AppWashApiError, WrongCredentialsError
 
-email = "example@mail.org"
-password = "abcdefgh"
-location_id = "11111"
-token = "1111111:11111111111:1111"
-servertime = 1657791333
+EMAIL = "example@mail.org"
+PASSWORD = "abcdefgh"
+LOCATION_ID = "11111"
+TOKEN = "1111111:11111111111:1111"
+SERVERTIME = 1657791333
+SERVICE_ID = "12345"
 
 
 @pytest.fixture
@@ -16,7 +17,7 @@ def appwash(mocker, authentication_successful_result) -> AppWash:
     mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
-    appwash = AppWash(email, password)
+    appwash = AppWash(EMAIL, PASSWORD)
     return appwash
 
 
@@ -28,7 +29,7 @@ def service(mocker, services_result, appwash) -> Service:
     mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
-    services = appwash.services(location_id)
+    services = appwash.services(LOCATION_ID)
     return services[0]
 
 
@@ -39,14 +40,14 @@ def authentication_successful_result():
         "errorCode": 0,
         "errorDescription": "",
         "token_expire_ts": 1658354400,
-        "serverTime": servertime,
+        "serverTime": SERVERTIME,
         "activeSessions": [],
         "login": {
-            "email": email,
-            "username": email,
+            "email": EMAIL,
+            "username": EMAIL,
             "externalId": "123456789",
             "language": "EN",
-            "token": token,
+            "token": TOKEN,
             "offlineAllowed": True,
             "manageOthers": True,
             "administrator": True,
@@ -70,7 +71,7 @@ def authentication_wrong_credentials_result():
         "errorCode": 61,
         "errorDescription": "Login failed. Please check your username and password. (code 61)",
         "token_expire_ts": 0,
-        "serverTime": servertime
+        "serverTime": SERVERTIME
     }
 
 
@@ -80,10 +81,10 @@ def location_result():
         "errorCode": 0,
         "errorDescription": "",
         "token_expire_ts": 1658354400,
-        "serverTime": servertime,
+        "serverTime": SERVERTIME,
         "data": {
             "name": "Box 220402",
-            "externalId": location_id,
+            "externalId": LOCATION_ID,
             "gps": {},
             "locationTypeV2": "OTHER",
             "locationTypeObject": {
@@ -142,7 +143,7 @@ def location_invalid_result():
         "errorCode": 33,
         "errorDescription": "We couldn't find this location. Please try again later. (code 33)",
         "token_expire_ts": 1658354400,
-        "serverTime": servertime
+        "serverTime": SERVERTIME
     }
 
 
@@ -156,7 +157,7 @@ def services_result():
         "data": [
             {
                 "externalId": "38031",
-                "locationId": location_id,
+                "locationId": LOCATION_ID,
                 "location": "Waschküche - Haus 2",
                 "locationTopLevelName": "Ulm - Hochsträß 2",
                 "serviceType": "DRYER",
@@ -191,7 +192,7 @@ def services_result():
             },
             {
                 "externalId": "38032",
-                "locationId": location_id,
+                "locationId": LOCATION_ID,
                 "location": "Waschküche - Haus 2",
                 "locationTopLevelName": "Ulm - Hochsträß 2",
                 "serviceType": "WASHING_MACHINE",
@@ -229,16 +230,61 @@ def services_result():
 
 
 @pytest.fixture
+def service_result():
+    return {
+        "errorCode": 0,
+        "errorDescription": "",
+        "token_expire_ts": 1658354400,
+        "serverTime": 1657832158,
+        "data": {
+            "externalId": SERVICE_ID,
+            "locationId": LOCATION_ID,
+            "location": "Sample Name",
+            "locationTopLevelName": "SampleTopLevelName",
+            "serviceType": "WASHING_MACHINE",
+            "serviceName": "Waschmaschine",
+            "unit": "Transaktion",
+            "state": "AVAILABLE",
+            "stateDescription": "frei",
+            "requiredFields": [],
+            "freeFormQuestionInt": [],
+            "pricing": [
+                {
+                    "serviceType": "WASHING_MACHINE",
+                    "componentPriceObjects": [
+                        {
+                            "type": "UNIT_PRICE",
+                            "fullPriceString": "Pro Waschgang: EUR 2.50",
+                            "priceString": "EUR 2.50",
+                            "costCents": 250
+                        }
+                    ]
+                }
+            ],
+            "tariffSetName": "default",
+            "gps": {},
+            "reservable": "NOT_RESERVABLE",
+            "reservations": [],
+            "blockTimeSeconds": 900,
+            "timeOfArrivalSeconds": 0,
+            "checkoutTimeSeconds": 0,
+            "startWithPredeterminedUsage": False,
+            "optionalName": ""
+        }
+    }
+
+
+@pytest.fixture
 def service_buy_result():
     return {
         "errorCode": 0,
         "errorDescription": "",
         "token_expire_ts": 1658268000,
-        "serverTime": servertime,
+        "serverTime": SERVERTIME,
         "data": {
             "sessionId": "4114114",
             "externalId": "12345",
-            "locationExternalId": location_id,
+            "locationExternalId": LOCATION_ID,
             "locationName": "Location",
             "serviceType": "WASHING_MACHINE",
             "startDateTime": 1657714551,
@@ -262,13 +308,13 @@ def test_create_appwash(mocker, authentication_successful_result):
     mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
-    appwash = AppWash(email, password, location_id)
+    appwash = AppWash(EMAIL, PASSWORD, LOCATION_ID)
 
-    assert appwash.email == email
-    assert appwash.password == password
-    assert appwash.location_id == location_id
+    assert appwash.email == EMAIL
+    assert appwash.password == PASSWORD
+    assert appwash.location_id == LOCATION_ID
 
-    assert appwash.token == token
+    assert appwash.token == TOKEN
 
 
 def test_create_appwash_without_location(mocker, authentication_successful_result):
@@ -279,7 +325,7 @@ def test_create_appwash_without_location(mocker, authentication_successful_resul
     mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
-    appwash = AppWash(email, password)
+    appwash = AppWash(EMAIL, PASSWORD)
 
     assert appwash.location_id == None
 
@@ -293,7 +339,7 @@ def test_create_appwash_wrong_credentials(mocker, authentication_wrong_credentia
                  mock_perform_request)
 
     with pytest.raises(WrongCredentialsError):
-        AppWash(email, "")
+        AppWash(EMAIL, "")
 
 
 def test_default_location(mocker, location_result, appwash):
@@ -304,13 +350,13 @@ def test_default_location(mocker, location_result, appwash):
     mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
-    appwash.location_id = location_id
+    appwash.location_id = LOCATION_ID
 
     location = appwash.location()
 
     assert isinstance(location, Location)
 
-    assert location.id == location_id
+    assert location.id == LOCATION_ID
     assert LOCATION_TYPE.has(location.location_type)
     assert location.name == "Box 220402"
 
@@ -324,9 +370,9 @@ def test_specific_location(mocker, location_result, appwash):
                  mock_perform_request)
 
     appwash.location_id = "999999"
-    location = appwash.location(location_id)
+    location = appwash.location(LOCATION_ID)
 
-    assert location.id == location_id
+    assert location.id == LOCATION_ID
 
 
 def test_missing_location(appwash):
@@ -356,7 +402,7 @@ def test_services_default_location(mocker, services_result, appwash):
     mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
-    appwash.location_id = location_id
+    appwash.location_id = LOCATION_ID
 
     services = appwash.services()
 
@@ -367,7 +413,7 @@ def test_services_default_location(mocker, services_result, appwash):
 
     s = services[0]
 
-    assert s.location_id == location_id
+    assert s.location_id == LOCATION_ID
     assert SERVICE_TYPE.has(s.type)
 
 
@@ -390,8 +436,24 @@ def test_services_invalid_location(mocker, location_invalid_result, appwash):
         appwash.services("abc")
 
 
-def test_buy_service_no_id(mocker, service_buy_result, appwash):
-    """Test if error gets thrown if the location doesn't exist"""
+def test_get_service(mocker, service_result, appwash):
+    """Test retrieving a single service."""
+
+    def mock_perform_request(self):
+        self._response = service_result
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
+                 mock_perform_request)
+
+    service = appwash.service("12345")
+
+    assert isinstance(service, Service)
+    assert service.location_id == LOCATION_ID
+    assert SERVICE_TYPE.has(service.type)
+    assert service.service_id == SERVICE_ID
+
+
+def test_buy_service_by_id(mocker, service_buy_result, appwash):
+    """Test buying a service by id."""
 
     def mock_perform_request(self):
         self._response = service_buy_result
@@ -420,7 +482,7 @@ def test_check_credentials_valid(mocker, authentication_successful_result):
     mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
-    assert check_credentials(email, password)
+    assert check_credentials(EMAIL, PASSWORD)
 
 
 def test_check_credentials_invalid(mocker, authentication_wrong_credentials_result):
@@ -431,7 +493,7 @@ def test_check_credentials_invalid(mocker, authentication_wrong_credentials_resu
     mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
-    assert check_credentials(email, password) == False
+    assert check_credentials(EMAIL, PASSWORD) == False
 
 
 def test_check_credentials_connection_error(mocker):
@@ -443,4 +505,4 @@ def test_check_credentials_connection_error(mocker):
                  mock_perform_request)
 
     with pytest.raises(Exception):
-        check_credentials(email, password)
+        check_credentials(EMAIL, PASSWORD)
