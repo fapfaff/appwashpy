@@ -81,9 +81,9 @@ class AppWash:
         request = ApiRequest(
             self, endpoint=f"/locations/split/{location_id}", method=HTTP_METHOD.GET)
 
-        if request.response["error_code"] != 0:
+        if request.response["errorCode"] != 0:
             raise AppWashApiError(
-                request.response["error_code"], request.response["errorDescription"])
+                request.response["errorCode"], request.response["errorDescription"])
 
         return Location._from_result(request.response["data"])
 
@@ -104,9 +104,9 @@ class AppWash:
         request = ApiRequest(
             self, endpoint=f"/location/{location_id}/connectorsv2", method=HTTP_METHOD.POST, body=body)
 
-        if request.response["error_code"] != 0:
+        if request.response["errorCode"] != 0:
             raise AppWashApiError(
-                request.response["error_code"], request.response["errorDescription"])
+                request.response["errorCode"], request.response["errorDescription"])
 
         services = []
         for service in request.response["data"]:
@@ -124,6 +124,6 @@ class AppWash:
         request = ApiRequest(
             self, endpoint=f'/connector/{service_id}/start', method=HTTP_METHOD.POST, body=body)
 
-        if request.response["error_code"] != 0:
+        if request.response["errorCode"] != 0:
             raise AppWashApiError(
-                request.response["error_code"], request.response["errorDescription"])
+                request.response["errorCode"], request.response["errorDescription"])
