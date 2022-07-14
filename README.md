@@ -38,7 +38,7 @@ services[0].buy()
 appwash.buy("12345")
 ```
 
-Be careful, calling this function multiple times cancels the previous service and bill you again.  
+Be careful, calling this function multiple times cancels the previous service and bills you again.  
 No warranty for freedom from errors and no compensation for damages incurred.
 
 ## Donations
