@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "appwashpy"
-version = "1.2.2"
+version = "1.2.3"
 authors = [
   { name="fapfaff", email="fabian-pfaff@outlook.de" },
 ]

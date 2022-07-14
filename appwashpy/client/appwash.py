@@ -22,6 +22,7 @@ class AppWash:
     password: str
     location_id: str = None
 
+    _token: str = None
     _token_expiry: int = None
 
     def __init__(self, email: str, password: str, location_id: str = None):
@@ -31,7 +32,7 @@ class AppWash:
         if location_id != None:
             self.location_id = location_id
 
-    def authenticate(self) -> None:
+    def _authenticate(self) -> None:
         """Loads a new authentication token for your Account."""
         request = ApiRequest(
             self,
@@ -57,6 +58,8 @@ class AppWash:
     @property
     def token(self) -> None:
         """Getter for the token. Automatically renews the token if the old one is expired."""
+        if self._token == None:
+            self._authenticate()
         if(self._token_expiry > current_timestamp()):
             return self._token
         else:

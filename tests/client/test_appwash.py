@@ -18,6 +18,7 @@ def appwash(mocker, authentication_successful_result) -> AppWash:
                  mock_perform_request)
 
     appwash = AppWash(EMAIL, PASSWORD)
+    appwash._authenticate()
     return appwash
 
 
@@ -309,6 +310,7 @@ def test_create_appwash(mocker, authentication_successful_result):
                  mock_perform_request)
 
     appwash = AppWash(EMAIL, PASSWORD, LOCATION_ID)
+    appwash._authenticate()
 
     assert appwash.email == EMAIL
     assert appwash.password == PASSWORD
@@ -339,7 +341,7 @@ def test_create_appwash_wrong_credentials(mocker, authentication_wrong_credentia
                  mock_perform_request)
 
     with pytest.raises(WrongCredentialsError):
-        AppWash(EMAIL, "")
+        AppWash(EMAIL, "")._authenticate()
 
 
 def test_default_location(mocker, location_result, appwash):
