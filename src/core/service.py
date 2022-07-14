@@ -38,12 +38,12 @@ class Service:
             _client=client,
             service_id=result["externalId"],
             location_id=result["locationId"],
-            type=SERVICE_TYPE[result["serviceType"]],
+            type=result["serviceType"],
             name=result["serviceName"],
             cost_cents=result["pricing"][0]["componentPriceObjects"][0]["costCents"],
             reservable=False if result["reservable"] == "NOT_RESERVABLE" else True,
             session_start=result["lastSessionStart"] if "lastSessionStart" in result else None,
-            state=STATE[result["state"]]
+            state=result["state"]
         )
 
     def buy(self) -> None:
