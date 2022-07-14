@@ -31,9 +31,7 @@ class AppWash:
         if location_id != None:
             self.location_id = location_id
 
-        self._authenticate()
-
-    def _authenticate(self) -> None:
+    def authenticate(self) -> None:
         """Loads a new authentication token for your Account."""
         request = ApiRequest(
             self,

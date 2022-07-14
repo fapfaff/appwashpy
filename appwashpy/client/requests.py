@@ -29,6 +29,8 @@ class ApiRequest:
                  ):
 
         if endpoint != "/login":
+            if client.token == None:
+                client.authenticate()
             self.headers['token'] = client.token
 
         self.method = str(method)
