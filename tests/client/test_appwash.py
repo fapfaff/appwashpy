@@ -1,5 +1,5 @@
 import pytest
-from appwashpy import AppWash, Location, Service, LOCATION_TYPE, SERVICE_TYPE
+from appwashpy import AppWash, Location, Service, LOCATION_TYPE, SERVICE_TYPE, check_credentials
 from appwashpy.common.errors import AppWashApiError, WrongCredentialsError
 
 email = "example@mail.org"
@@ -402,9 +402,45 @@ def test_buy_service_no_id(mocker, service_buy_result, appwash):
 
 
 def test_service_buy(mocker, service_buy_result, service):
+    """Tests if service.buy() works."""
+
     def mock_perform_request(self):
         self._response = service_buy_result
     mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
     service.buy()
+
+
+def test_check_credentials_valid(mocker, authentication_successful_result):
+    """Tests if check_credentials returns True with valid credentials."""
+
+    def mock_perform_request(self):
+        self._response = authentication_successful_result
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
+                 mock_perform_request)
+
+    assert check_credentials(email, password)
+
+
+def test_check_credentials_invalid(mocker, authentication_wrong_credentials_result):
+    """Tests if check_credentials returns False with invalid credentials."""
+
+    def mock_perform_request(self):
+        self._response = authentication_wrong_credentials_result
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
+                 mock_perform_request)
+
+    assert check_credentials(email, password) == False
+
+
+def test_check_credentials_connection_error(mocker):
+    """Tests if check_credentials raises an Exception when the connection fails."""
+
+    def mock_perform_request(self):
+        raise Exception()
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
+                 mock_perform_request)
+
+    with pytest.raises(Exception):
+        check_credentials(email, password)
