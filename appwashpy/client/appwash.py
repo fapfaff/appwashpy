@@ -1,9 +1,9 @@
-from src.client.requests import ApiRequest
-from src.common.enums import HTTP_METHOD, SERVICE_TYPE
-from src.common.errors import AppWashApiError, WrongCredentialsError
-from src.common.helper import current_timestamp
-from src.core.location import Location
-from src.core.service import Service
+from appwashpy.client.requests import ApiRequest
+from appwashpy.common.enums import HTTP_METHOD, SERVICE_TYPE
+from appwashpy.common.errors import AppWashApiError, WrongCredentialsError
+from appwashpy.common.helper import current_timestamp
+from appwashpy.core.location import Location
+from appwashpy.core.service import Service
 
 
 class AppWash:

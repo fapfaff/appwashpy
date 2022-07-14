@@ -1,9 +1,6 @@
 import pytest
-from src import AppWash
-from src.common.enums import LOCATION_TYPE, SERVICE_TYPE
-from src.common.errors import AppWashApiError, WrongCredentialsError
-from src.core.location import Location
-from src.core.service import Service
+from appwashpy import AppWash, Location, Service, LOCATION_TYPE, SERVICE_TYPE
+from appwashpy.common.errors import AppWashApiError, WrongCredentialsError
 
 email = "example@mail.org"
 password = "abcdefgh"
@@ -16,7 +13,7 @@ servertime = 1657791333
 def appwash(mocker, authentication_successful_result) -> AppWash:
     def mock_perform_request(self):
         self._response = authentication_successful_result
-    mocker.patch("src.client.requests.ApiRequest._perform_request",
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
     appwash = AppWash(email, password)
@@ -28,7 +25,7 @@ def service(mocker, services_result, appwash) -> Service:
 
     def mock_perform_request(self):
         self._response = services_result
-    mocker.patch("src.client.requests.ApiRequest._perform_request",
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
     services = appwash.services(location_id)
@@ -262,7 +259,7 @@ def test_create_appwash(mocker, authentication_successful_result):
 
     def mock_perform_request(self):
         self._response = authentication_successful_result
-    mocker.patch("src.client.requests.ApiRequest._perform_request",
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
     appwash = AppWash(email, password, location_id)
@@ -279,7 +276,7 @@ def test_create_appwash_without_location(mocker, authentication_successful_resul
 
     def mock_perform_request(self):
         self._response = authentication_successful_result
-    mocker.patch("src.client.requests.ApiRequest._perform_request",
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
     appwash = AppWash(email, password)
@@ -292,7 +289,7 @@ def test_create_appwash_wrong_credentials(mocker, authentication_wrong_credentia
 
     def mock_perform_request(self):
         self._response = authentication_wrong_credentials_result
-    mocker.patch("src.client.requests.ApiRequest._perform_request",
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
     with pytest.raises(WrongCredentialsError):
@@ -304,7 +301,7 @@ def test_default_location(mocker, location_result, appwash):
 
     def mock_perform_request(self):
         self._response = location_result
-    mocker.patch("src.client.requests.ApiRequest._perform_request",
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
     appwash.location_id = location_id
@@ -323,7 +320,7 @@ def test_specific_location(mocker, location_result, appwash):
 
     def mock_perform_request(self):
         self._response = location_result
-    mocker.patch("src.client.requests.ApiRequest._perform_request",
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
     appwash.location_id = "999999"
@@ -344,7 +341,7 @@ def test_invalid_location(mocker, location_invalid_result, appwash):
 
     def mock_perform_request(self):
         self._response = location_invalid_result
-    mocker.patch("src.client.requests.ApiRequest._perform_request",
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
     with pytest.raises(AppWashApiError):
@@ -356,7 +353,7 @@ def test_services_default_location(mocker, services_result, appwash):
 
     def mock_perform_request(self):
         self._response = services_result
-    mocker.patch("src.client.requests.ApiRequest._perform_request",
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
     appwash.location_id = location_id
@@ -386,7 +383,7 @@ def test_services_invalid_location(mocker, location_invalid_result, appwash):
 
     def mock_perform_request(self):
         self._response = location_invalid_result
-    mocker.patch("src.client.requests.ApiRequest._perform_request",
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
     with pytest.raises(AppWashApiError):
@@ -398,7 +395,7 @@ def test_buy_service_no_id(mocker, service_buy_result, appwash):
 
     def mock_perform_request(self):
         self._response = service_buy_result
-    mocker.patch("src.client.requests.ApiRequest._perform_request",
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
     appwash.buy_service("12345")
@@ -407,7 +404,7 @@ def test_buy_service_no_id(mocker, service_buy_result, appwash):
 def test_service_buy(mocker, service_buy_result, service):
     def mock_perform_request(self):
         self._response = service_buy_result
-    mocker.patch("src.client.requests.ApiRequest._perform_request",
+    mocker.patch("appwashpy.client.requests.ApiRequest._perform_request",
                  mock_perform_request)
 
     service.buy()
