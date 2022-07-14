@@ -3,12 +3,13 @@
 Inofficial API Client for appWash by Miele.
 
 ## Usage
+Check the Juypter-Notebook (example.ipynb) for more code examples!
+
+### Installation
 Install the package via pip:
 ```shell
 $ pip install appwashpy
 ```
-
-Check the Juypter-Notebook for more code examples!
 
 ### Get Started
 Import and initialize the AppWash-Client with your Email and Password:  
