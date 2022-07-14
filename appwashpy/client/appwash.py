@@ -127,3 +127,24 @@ class AppWash:
         if request.response["errorCode"] != 0:
             raise AppWashApiError(
                 request.response["errorCode"], request.response["errorDescription"])
+
+
+def check_credentials(email: str, password: str) -> bool:
+    """Checks wether the credentials are valid."""
+    request = ApiRequest(
+        None,
+        endpoint='/login',
+        method=HTTP_METHOD.POST,
+        body={
+            "email": email,
+            "password": password
+        }
+    )
+    error_code = request.response["errorCode"]
+    if error_code == 0:
+        return True
+    if error_code == 61:
+        return False
+    else:
+        raise AppWashApiError(
+            error_code, request.response["errorDescription"])
