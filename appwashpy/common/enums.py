@@ -41,6 +41,7 @@ class STATE(BaseStringEnum):
     OCCUPIED = auto()
     FAULTED = auto()
     SESSION_WAIT_ON = auto()
+    STOPPABLE = auto()
 
 
 class LOCATION_TYPE(BaseStringEnum):
