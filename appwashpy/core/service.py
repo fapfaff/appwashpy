@@ -46,13 +46,13 @@ class Service:
             state=result["state"]
         )
 
-    def buy(self) -> None:
+    def buy(self, safe: bool = True) -> None:
         """Buys the service.
 
         Be careful, calling this function multiple times cancels the previous service and bill you again.
         No warranty for freedom from errors and no compensation for damages incurred.
         """
-        self._client.buy_service(self.service_id)
+        self._client.buy_service(self.service_id, safe)
 
     def stop(self) -> None:
         """Buys the service."""
