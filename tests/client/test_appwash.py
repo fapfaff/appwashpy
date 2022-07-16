@@ -512,6 +512,52 @@ def test_service_buy(mocker, service_buy_result, service):
     service.buy()
 
 
+def test_service_wont_safe_buy_if_stoppable(mocker, service: Service):
+    """Test if service will be bought if it's state is STOPPABLE or SESSION_WAIT_ON."""
+
+    def mock_service(self, service_id):
+        service.state = STATE.STOPPABLE
+        return service
+
+    mocker.patch(
+        "appwashpy.client.appwash.AppWash.service", mock_service
+    )
+
+    def mock_perform_request(self):
+        self._response = service_buy_result
+
+    mocker.patch(
+        "appwashpy.client.requests.ApiRequest._perform_request", mock_perform_request
+    )
+
+    res = service.buy()
+
+    assert  res == False
+
+
+def test_service_wont_safe_buy_if_session_wait_on(mocker, service: Service):
+    """Test if service will be bought if it's state is STOPPABLE or SESSION_WAIT_ON."""
+
+    def mock_service(self, service_id):
+        service.state = STATE.SESSION_WAIT_ON
+        return service
+
+    mocker.patch(
+        "appwashpy.client.appwash.AppWash.service", mock_service
+    )
+
+    def mock_perform_request(self):
+        self._response = service_buy_result
+
+    mocker.patch(
+        "appwashpy.client.requests.ApiRequest._perform_request", mock_perform_request
+    )
+
+    res = service.buy()
+    
+    assert  res == False
+
+
 def test_check_credentials_valid(mocker, authentication_successful_result):
     """Tests if check_credentials returns True with valid credentials."""
 
