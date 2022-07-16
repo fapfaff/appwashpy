@@ -1,7 +1,9 @@
-import requests
-from appwashpy.common.settings import BASE_URL
-from appwashpy.common.enums import HTTP_METHOD
 from typing import TYPE_CHECKING
+
+import requests
+
+from appwashpy.common.enums import HTTP_METHOD
+from appwashpy.common.settings import BASE_URL
 
 # Fix cyclical import because of type annotation
 if TYPE_CHECKING:

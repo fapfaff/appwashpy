@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
-from appwashpy.common.enums import SERVICE_TYPE, STATE
 from typing import TYPE_CHECKING
+
+from appwashpy.common.enums import SERVICE_TYPE, STATE
 
 # Fix cyclical import because of type annotation
 if TYPE_CHECKING:

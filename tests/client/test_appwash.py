@@ -7,6 +7,7 @@ from appwashpy import (
     SERVICE_TYPE,
     check_credentials,
 )
+from appwashpy.common.enums import STATE
 from appwashpy.common.errors import AppWashApiError, WrongCredentialsError
 
 EMAIL = "example@mail.org"

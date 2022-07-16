@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from appwashpy.common.enums import LOCATION_TYPE
 
 
