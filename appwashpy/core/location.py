@@ -12,7 +12,7 @@ class Location:
         location_type: Which type of location it is.
         services: List of dicsts of available services at the location. Dicts contains "service" and "costs_cent" keys.
         name: Name of the location.
-        reservable: Wether you can reserve services at the location
+        reservable: Whether you can reserve services at the location
         reservable_days_in_advance: How much days in advance you can reserve if allowed.
 
     """

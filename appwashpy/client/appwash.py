@@ -155,7 +155,7 @@ class AppWash:
             safe: If the service should be bougth again if it's already running.
 
         Returns:
-            Wether the service was bought sucessfully.
+            Whether the service was bought sucessfully.
         """
 
         if safe:
@@ -200,7 +200,7 @@ class AppWash:
 
 
 def check_credentials(email: str, password: str) -> bool:
-    """Checks wether the credentials are valid."""
+    """Checks whether the credentials are valid."""
     request = ApiRequest(
         None,
         endpoint="/login",

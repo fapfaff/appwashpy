@@ -18,7 +18,7 @@ class Service:
         type: Type of the Service. Known Types: WASHING_MACHINE, DRYER, ELECTRICITY.
         name: Name of the service.
         cost_cents: Price of the service in cents.
-        reservable: Wether the service is reservable.
+        reservable: Whether the service is reservable.
         state: Current state of the service. Known States: AVAILABLE, OCCUPIED, FAULTED, SESSION_WAIT_ON
         session_start: Timestamp of when the service was started, if it is currently activate.
 
