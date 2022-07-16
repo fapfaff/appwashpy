@@ -18,10 +18,11 @@ class Service:
         name: Name of the service.
         cost_cents: Price of the service in cents.
         reservable: Wether the service is reservable.
-        state: Current state of the service. Known States: AVAILABLE, OCCUPIED, FAULTED, SESSION_WAIT_ON 
+        state: Current state of the service. Known States: AVAILABLE, OCCUPIED, FAULTED, SESSION_WAIT_ON
         session_start: Timestamp of when the service was started, if it is currently activate.
 
     """
+
     _client: "AppWash" = field(repr=False)
     service_id: str
     location_id: str
@@ -42,8 +43,10 @@ class Service:
             name=result["serviceName"],
             cost_cents=result["pricing"][0]["componentPriceObjects"][0]["costCents"],
             reservable=False if result["reservable"] == "NOT_RESERVABLE" else True,
-            session_start=result["lastSessionStart"] if "lastSessionStart" in result else None,
-            state=result["state"]
+            session_start=result["lastSessionStart"]
+            if "lastSessionStart" in result
+            else None,
+            state=result["state"],
         )
 
     def buy(self, safe: bool = True) -> None:

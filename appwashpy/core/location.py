@@ -9,12 +9,13 @@ class Location:
     Attributes:
         id: ID of the Location
         location_type: Which type of location it is.
-        services: List of dicsts of available services at the location. Dicts contains "service" and "costs_cent" keys. 
+        services: List of dicsts of available services at the location. Dicts contains "service" and "costs_cent" keys.
         name: Name of the location.
         reservable: Wether you can reserve services at the location
         reservable_days_in_advance: How much days in advance you can reserve if allowed.
 
     """
+
     id: str
     location_type: LOCATION_TYPE
     location_status: str
@@ -29,12 +30,10 @@ class Location:
         for service in result["services"]:
             # Get price of service
             price = list(
-                filter(lambda p: p["serviceType"] == service["type"], result["pricing"]))[0]
+                filter(lambda p: p["serviceType"] == service["type"], result["pricing"])
+            )[0]
 
-            services.append({
-                "service": service["type"],
-                "costs_cent": price
-            })
+            services.append({"service": service["type"], "costs_cent": price})
 
         return Location(
             id=result["externalId"],

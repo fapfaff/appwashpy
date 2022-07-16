@@ -28,5 +28,5 @@ class WrongCredentialsError(AppWashApiError):
 
     def __init__(self, error_code: str, error_message: str, email: str, password: str):
         super().__init__(error_code, error_message)
-        self.email = email,
+        self.email = (email,)
         self.password = password
