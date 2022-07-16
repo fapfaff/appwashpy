@@ -1,5 +1,5 @@
 from appwashpy.client.requests import ApiRequest
-from appwashpy.common.enums import HTTP_METHOD, SERVICE_TYPE
+from appwashpy.common.enums import HTTP_METHOD, SERVICE_TYPE, STATE
 from appwashpy.common.errors import AppWashApiError, WrongCredentialsError
 from appwashpy.common.helper import current_timestamp
 from appwashpy.core.location import Location
@@ -130,7 +130,7 @@ class AppWash:
 
         return Service._from_result(self, request.response["data"])
 
-    def buy_service(self, service_id: str) -> None:
+    def buy_service(self, service_id: str, safe: bool = True) -> bool:
         """Buy the service with the specified ID. 
 
             Be careful, calling this function multiple times cancels the previous service and bill you again.
@@ -138,7 +138,17 @@ class AppWash:
 
         Attributes:
             serivce_id: ID of the service
+            safe: If the service should be bougth again if it's already running.
+
+        Returns:
+            Wether the service was bought sucessfully.
         """
+
+        if safe:
+            service = self.service(service_id)
+            if service.state in (STATE.SESSION_WAIT_ON.name, STATE.STOPPABLE.name):
+                return False
+        
         body = {"sourceChannel": "WEBSITE"}
         request = ApiRequest(
             self, endpoint=f'/connector/{service_id}/start', method=HTTP_METHOD.POST, body=body)
@@ -146,6 +156,8 @@ class AppWash:
         if request.response["errorCode"] != 0:
             raise AppWashApiError(
                 request.response["errorCode"], request.response["errorDescription"])
+        
+        return True
 
 
 def check_credentials(email: str, password: str) -> bool:
