@@ -473,8 +473,15 @@ def test_get_service(mocker, service_result, appwash):
     assert service.service_id == SERVICE_ID
 
 
-def test_buy_service_by_id(mocker, service_buy_result, appwash):
+def test_buy_service_by_id(mocker, service_buy_result, appwash, service):
     """Test buying a service by id."""
+
+    def mock_service(self, service_id):
+        return service
+
+    mocker.patch(
+        "appwashpy.client.appwash.AppWash.service", mock_service
+    )
 
     def mock_perform_request(self):
         self._response = service_buy_result
@@ -489,6 +496,12 @@ def test_buy_service_by_id(mocker, service_buy_result, appwash):
 def test_service_buy(mocker, service_buy_result, service):
     """Tests if service.buy() works."""
 
+    def mock_service(self, service_id):
+        return service
+
+    mocker.patch(
+        "appwashpy.client.appwash.AppWash.service", mock_service
+    )
     def mock_perform_request(self):
         self._response = service_buy_result
 
