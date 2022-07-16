@@ -53,3 +53,7 @@ class Service:
         No warranty for freedom from errors and no compensation for damages incurred.
         """
         self._client.buy_service(self.service_id)
+
+    def stop(self) -> None:
+        """Buys the service."""
+        self._client.stop_service(self.service_id)

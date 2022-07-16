@@ -159,7 +159,21 @@ class AppWash:
         
         return True
 
+    def stop_service(self, service_id: str, safe: bool = True) -> None:
+        """Stop the service with the specified ID. 
 
+        Attributes:
+            serivce_id: ID of the service
+        """
+
+        body = {"sourceChannel": "WEBSITE"}
+        request = ApiRequest(
+            self, endpoint=f'/connector/{service_id}/stop', method=HTTP_METHOD.POST, body=body)
+
+        if request.response["errorCode"] != 0:
+            raise AppWashApiError(
+                request.response["errorCode"], request.response["errorDescription"])
+        
 def check_credentials(email: str, password: str) -> bool:
     """Checks wether the credentials are valid."""
     request = ApiRequest(
