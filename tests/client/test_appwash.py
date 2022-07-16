@@ -479,9 +479,7 @@ def test_buy_service_by_id(mocker, service_buy_result, appwash, service):
     def mock_service(self, service_id):
         return service
 
-    mocker.patch(
-        "appwashpy.client.appwash.AppWash.service", mock_service
-    )
+    mocker.patch("appwashpy.client.appwash.AppWash.service", mock_service)
 
     def mock_perform_request(self):
         self._response = service_buy_result
@@ -499,9 +497,8 @@ def test_service_buy(mocker, service_buy_result, service):
     def mock_service(self, service_id):
         return service
 
-    mocker.patch(
-        "appwashpy.client.appwash.AppWash.service", mock_service
-    )
+    mocker.patch("appwashpy.client.appwash.AppWash.service", mock_service)
+
     def mock_perform_request(self):
         self._response = service_buy_result
 
@@ -519,9 +516,7 @@ def test_service_wont_safe_buy_if_stoppable(mocker, service: Service):
         service.state = STATE.STOPPABLE
         return service
 
-    mocker.patch(
-        "appwashpy.client.appwash.AppWash.service", mock_service
-    )
+    mocker.patch("appwashpy.client.appwash.AppWash.service", mock_service)
 
     def mock_perform_request(self):
         self._response = service_buy_result
@@ -532,7 +527,7 @@ def test_service_wont_safe_buy_if_stoppable(mocker, service: Service):
 
     res = service.buy()
 
-    assert  res == False
+    assert res == False
 
 
 def test_service_wont_safe_buy_if_session_wait_on(mocker, service: Service):
@@ -542,9 +537,7 @@ def test_service_wont_safe_buy_if_session_wait_on(mocker, service: Service):
         service.state = STATE.SESSION_WAIT_ON
         return service
 
-    mocker.patch(
-        "appwashpy.client.appwash.AppWash.service", mock_service
-    )
+    mocker.patch("appwashpy.client.appwash.AppWash.service", mock_service)
 
     def mock_perform_request(self):
         self._response = service_buy_result
@@ -554,8 +547,8 @@ def test_service_wont_safe_buy_if_session_wait_on(mocker, service: Service):
     )
 
     res = service.buy()
-    
-    assert  res == False
+
+    assert res == False
 
 
 def test_check_credentials_valid(mocker, authentication_successful_result):
